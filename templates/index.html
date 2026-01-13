@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Strength Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-container {
+            margin: 30px 0;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 12px;
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0052a3;
+        }
+        .result {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+        .feedback li {
+            margin: 10px 0;
+            font-size: 17px;
+        }
+        .strong   { color: green; font-weight: bold; }
+        .medium   { color: #e67e22; font-weight: bold; }
+        .weak     { color: #c0392b; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Password Strength Checker</h1>
+
+    <div class="form-container">
+        <form method="POST">
+            <input type="password" name="password" placeholder="Enter your password..." required autofocus>
+            <button type="submit">Check Strength</button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="result">
+        <h3>Result for: {{ result.masked }}</h3>
+        
+        <p style="font-size: 1.4em; margin: 20px 0;">
+            Strength: 
+            <span class="{% if result.label == 'Very Strong' or result.label == 'Strong' %}strong
+                        {% elif result.label == 'Medium' %}medium
+                        {% else %}weak{% endif %}">
+                {{ result.label }}
+            </span>
+            (score: {{ result.score }}/100+)
+        </p>
+
+        <ul class="feedback">
+            {% for msg in result.feedback %}
+                <li>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+</body>
+</html>
